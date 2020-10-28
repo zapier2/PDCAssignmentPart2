@@ -150,7 +150,7 @@ public class Game {
                                 System.out.println("You have won $" + player.getWinnings());
                                 
                                 database.insertToTable(player);
-                                
+                                database.getQuery();
                                 saveWinnings(answer);
                                 
                                 isOn = false;

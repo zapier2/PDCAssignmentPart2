@@ -71,8 +71,7 @@ public final class DBManager {
             Statement statement = conn.createStatement();
             statement.executeUpdate("DROP TABLE RESULTS");
 
-        
-        conn.createStatement().execute("CREATE TABLE RESULTS (PLAYERS VARCHAR(20), WINNINGS INT)");
+            conn.createStatement().execute("CREATE TABLE RESULTS (PLAYERS VARCHAR(20), WINNINGS INT)");
         } catch (SQLException ex) {
             System.err.println("SQLException: " + ex.getMessage());
 
@@ -92,6 +91,36 @@ public final class DBManager {
             System.err.println("SQLException: " + ex.getMessage());
         }
 //        System.out.println(player.getPlayerName());
+    }
+    
+    public void getQuery()
+    {
+        ResultSet rs=null;
+
+        try {
+
+            System.out.println(" getting query....");
+            Statement statement = conn.createStatement(
+                    ResultSet.TYPE_SCROLL_INSENSITIVE, 
+                    ResultSet.CONCUR_READ_ONLY);
+
+
+
+            String sqlQuery="select * from RESULTS";
+
+            rs=statement.executeQuery(sqlQuery);
+            rs.beforeFirst();
+            while(rs.next())
+            {
+                String name=rs.getString("Players"); // 1
+                int winnings =rs.getInt(2);
+                System.out.println(name+":  Won $"+winnings);
+            }
+
+        } catch (SQLException ex) {
+            System.err.println("SQLException: " + ex.getMessage());
+        }
+
     }
 
 }
