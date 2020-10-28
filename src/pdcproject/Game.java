@@ -30,10 +30,12 @@ public class Game {
     private LifeLines lifelines;
     private Scoreboard playerScores;
     private Scanner scan;
+    private DBManager database;
 
     public Game() {
         questions = new ArrayList<>();
         loadQuestions();
+        database = new DBManager();
     }
 
     public void start() {
