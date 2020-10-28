@@ -79,5 +79,22 @@ public final class DBManager {
 
         }
     }
+    
+    public void insertToTable(Player player) {
+         try {
+            String name = player.getPlayerName();
+            int winning = player.getWinnings();
+            Statement statement=conn.createStatement();
+            String sqlInsert="INSERT INTO RESULTS VALUES('"+name+"', "+1000000+")";
+
+            statement.executeUpdate(sqlInsert);
+            
+            statement.close();
+            System.out.println("Insert created");
+            
+        } catch (SQLException ex) {
+            System.err.println("SQLException: " + ex.getMessage());
+        }
+    }
 
 }

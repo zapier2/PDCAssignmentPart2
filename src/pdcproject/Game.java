@@ -148,8 +148,11 @@ public class Game {
 
                                 System.out.println("Incorrect answer, Thanks for playing!");
                                 System.out.println("You have won $" + player.getWinnings());
+                                
+                                database.insertToTable(player);
+                                
                                 saveWinnings(answer);
-
+                                
                                 isOn = false;
                                 i = questions.size();
                                 input = true;
