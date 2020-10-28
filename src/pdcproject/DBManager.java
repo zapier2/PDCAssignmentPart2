@@ -18,7 +18,7 @@ import java.util.logging.Logger;
  * @author GerardPC
  * @note
  * embedded url
- * url = "jdbc:derby:WWTABDM;create=true"
+ * url = "jdbc:derby:WWTABDB;create=true"
  * online url
  * url = "jdbc:derby://localhost:1527/WWTBAMDB;create=true"
  * 
@@ -27,12 +27,13 @@ public final class DBManager {
     
     private static final String USER_NAME = "pdc";
     private static final String PASSWORD = "pdc";
-    private static final String URL = "jdbc:derby:WWTABDM;create=true";
-    
+    private static final String URL = "jdbc:derby:WWTBAMDB;create=true";
+ 
     Connection conn;
-
+    
     public DBManager() {
         establishConnection();
+        
     }
 
     public Connection getConnection() {
@@ -45,11 +46,13 @@ public final class DBManager {
             try {
                 conn = DriverManager.getConnection(URL, USER_NAME, PASSWORD);
                 System.out.println(URL + " Connected");
+                createResultsTable();
 
             } catch (SQLException ex) {
                 Logger.getLogger("Error starting database");
 
             }
+            
         }
     }
 
@@ -67,13 +70,9 @@ public final class DBManager {
         try {
             Statement statement = conn.createStatement();
             statement.executeUpdate("DROP TABLE RESULTS");
-            String sqlCreateTable = "CREATE TABLE RESULTS (PLAYERS VARCHAR(20), WINNINGS INT)";
-            String sqlInsertToTable = "";
 
-            statement.executeUpdate(sqlCreateTable);
-            statement.execute(sqlInsertToTable);
-            System.out.println("Table successfully made!");
-
+        
+        conn.createStatement().execute("CREATE TABLE RESULTS (PLAYERS VARCHAR(20), WINNINGS INT)");
         } catch (SQLException ex) {
             System.err.println("SQLException: " + ex.getMessage());
 
@@ -83,18 +82,16 @@ public final class DBManager {
     public void insertToTable(Player player) {
          try {
             String name = player.getPlayerName();
-            int winning = player.getWinnings();
-            Statement statement=conn.createStatement();
-            String sqlInsert="INSERT INTO RESULTS VALUES('"+name+"', "+1000000+")";
-
-            statement.executeUpdate(sqlInsert);
-            
-            statement.close();
+            int winnings = player.getWinnings();
+            String sqlInsert="INSERT INTO RESULTS VALUES('"+name+"', "+winnings+")";
+            conn.createStatement().execute(sqlInsert);
+          
             System.out.println("Insert created");
             
         } catch (SQLException ex) {
             System.err.println("SQLException: " + ex.getMessage());
         }
+//        System.out.println(player.getPlayerName());
     }
 
 }

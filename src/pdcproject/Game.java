@@ -36,10 +36,10 @@ public class Game {
         questions = new ArrayList<>();
         loadQuestions();
         database = new DBManager();
+        
     }
 
     public void start() {
-
         isOn = true;
         scan = new Scanner(System.in);
         playerScores = new Scoreboard();
