@@ -10,6 +10,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -28,13 +29,14 @@ public final class DBManager {
     private static final String USER_NAME = "pdc";
     private static final String PASSWORD = "pdc";
     private static final String URL = "jdbc:derby:WWTBAMDB;create=true";
- 
-    Connection conn;
+//    private static final String URL = "jdbc:derby://localhost:1527/WWTBAMDB;create=true";
+    Connection conn = null;
     
     public DBManager() {
         establishConnection();
         
     }
+    
 
     public Connection getConnection() {
         return this.conn;
@@ -46,12 +48,10 @@ public final class DBManager {
             try {
                 conn = DriverManager.getConnection(URL, USER_NAME, PASSWORD);
                 System.out.println(URL + " Connected");
-                createResultsTable();
             } catch (SQLException ex) {
                 Logger.getLogger("Error starting database");
 
-            }
-            
+            }          
         }
     }
 
@@ -70,8 +70,8 @@ public final class DBManager {
     public void createResultsTable() {
     
         try {
-            Statement statement = conn.createStatement();
-            statement.executeUpdate("DROP TABLE RESULTS");
+//            Statement statement = conn.createStatement();
+//            statement.executeUpdate("DROP TABLE RESULTS");
 
             conn.createStatement().execute("CREATE TABLE RESULTS (PLAYERS VARCHAR(20), WINNINGS INT)");
         } catch (SQLException ex) {
@@ -95,34 +95,30 @@ public final class DBManager {
 //        System.out.println(player.getPlayerName());
     }
     
-    public void getQuery()
+    public ArrayList<Player> getQuery()
     {
-        ResultSet rs=null;
+        ArrayList<Player> playerResults = new ArrayList<>();
+        ResultSet rs = null;
 
         try {
-
             System.out.println(" getting query....");
-            Statement statement = conn.createStatement(
-                    ResultSet.TYPE_SCROLL_INSENSITIVE, 
-                    ResultSet.CONCUR_READ_ONLY);
+            Statement statement = conn.createStatement();
 
-
-
-            String sqlQuery="select * from RESULTS";
+            String sqlQuery="SELECT * from RESULTS";
 
             rs=statement.executeQuery(sqlQuery);
-            rs.beforeFirst();
             while(rs.next())
             {
-                String name=rs.getString("Players"); // 1
-                int winnings =rs.getInt(2);
-                System.out.println(name+":  Won $"+winnings);
+                Player player = new Player();
+                player.setPlayerName(rs.getString(1));
+                player.setWinnings(rs.getInt(2));  
+                playerResults.add(player);
             }
 
         } catch (SQLException ex) {
             System.err.println("SQLException: " + ex.getMessage());
         }
-
+        
+        return playerResults;
     }
-
 }

@@ -30,9 +30,11 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.BorderFactory;
+import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.JList;
 import javax.swing.JOptionPane;
 
 /**
@@ -88,7 +90,7 @@ public class GameGUI extends JPanel implements ActionListener {
         startButton.setBackground(Color.pink);
         scoreButton.setBackground(Color.pink);
         exitButton.setBackground(Color.pink);
-
+        
         northPanel.add(gameTitle);
 
         JPanel backgroundPanel = new JPanel();
@@ -109,8 +111,19 @@ public class GameGUI extends JPanel implements ActionListener {
         super.removeAll();
         northPanel.removeAll();
         bottomPanel.removeAll();
+
+        ArrayList<Player> prevPlayers = database.getQuery();
+        System.out.println(prevPlayers.get(0).playerName);
+        
+        DefaultListModel<String> playerList = new DefaultListModel<>();
+        for(Player player : prevPlayers){
+            playerList.addElement("Name: " + player.playerName + "  Winnings: " + player.getWinnings());
+        }
+        JList list = new JList<>(playerList);
+        list.setFont(new Font("Monospaced", Font.PLAIN, 15));
         
         scoreBoard = new JLabel("Scoreboard");
+        scoreBoard.setFont(new Font("Monospaced", Font.BOLD, 30));
         startButton = new JButton("Start");
         exitButton = new JButton("Exit");
 
@@ -124,7 +137,8 @@ public class GameGUI extends JPanel implements ActionListener {
         bottomPanel.add(exitButton); 
         northPanel.add(scoreBoard);
         
-        super.add(northPanel, BorderLayout.CENTER);
+        super.add(northPanel, BorderLayout.NORTH);
+        super.add(list, BorderLayout.CENTER);
         super.add(bottomPanel, BorderLayout.SOUTH);
         revalidate();
         repaint();
@@ -313,8 +327,10 @@ public class GameGUI extends JPanel implements ActionListener {
     private void endGame() {
         if (player.getWinnings() == 1000000) {
             JOptionPane.showMessageDialog(this, "Congrats!! you are now a Millioniare!!!!$$$$$", "$$$$$$$$$$", JOptionPane.DEFAULT_OPTION);
+            saveWinnings(this.player);
         } else if (player.getWinnings() > 0) {
             JOptionPane.showMessageDialog(this, "Congrats " + player.getPlayerName() + " you won: $" + player.getWinnings(), "Good Job!", JOptionPane.DEFAULT_OPTION);
+            saveWinnings(this.player);
         } else {
             JOptionPane.showMessageDialog(this, "You won nothing! Thanks for playing " + this.player.playerName + "!", "Better luck next time!", JOptionPane.DEFAULT_OPTION);
         }
@@ -355,7 +371,7 @@ public class GameGUI extends JPanel implements ActionListener {
     }
 
     // Save winnings to database
-    private void saveWinnings(String save) {
+    private void saveWinnings(Player player) {
         System.out.println("Would you like to save you winnings? (Y) for yes or (N) for no");
 
     }
