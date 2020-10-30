@@ -207,11 +207,11 @@ public class Game {
         }
     }
 
-    public static void main(String[] args) {
-        System.out.println("----------------------------------------");
-        System.out.println("Welcome to Who Wants to be a Millionaire");
-        System.out.println("----------------------------------------");
-        Game game = new Game();
-        game.start();
-    }
+//    public static void main(String[] args) {
+//        System.out.println("----------------------------------------");
+//        System.out.println("Welcome to Who Wants to be a Millionaire");
+//        System.out.println("----------------------------------------");
+//        Game game = new Game();
+//        game.start();
+//    }
 }

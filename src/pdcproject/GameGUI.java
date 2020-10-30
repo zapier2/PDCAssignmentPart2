@@ -372,6 +372,7 @@ public class GameGUI extends JPanel implements ActionListener {
 
     // Save winnings to database
     private void saveWinnings(Player player) {
+        exitButton = new JButton("Take Winnings");
         System.out.println("Would you like to save you winnings? (Y) for yes or (N) for no");
 
     }
