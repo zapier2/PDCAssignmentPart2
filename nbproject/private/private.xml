@@ -3,11 +3,13 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Victor/Desktop/PDCAssignmentPart2/test/pdcproject/PlayerTest.java</file>
-            <file>file:/C:/Users/Victor/Desktop/PDCAssignmentPart2/src/pdcproject/Game.java</file>
-            <file>file:/C:/Users/Victor/Desktop/PDCAssignmentPart2/src/pdcproject/DBManager.java</file>
-            <file>file:/C:/Users/Victor/Desktop/PDCAssignmentPart2/src/pdcproject/Player.java</file>
-            <file>file:/C:/Users/Victor/Desktop/PDCAssignmentPart2/src/pdcproject/LifeLines.java</file>
+            <file>file:/C:/Users/gerar/Documents/NetBeansProjects/PDCAssignmentPart2/test/pdcproject/PlayerTest.java</file>
+            <file>file:/C:/Users/gerar/Documents/NetBeansProjects/PDCAssignmentPart2/src/pdcproject/GameGUI.java</file>
+            <file>file:/C:/Users/gerar/Documents/NetBeansProjects/PDCAssignmentPart2/src/pdcproject/Scoreboard.java</file>
+            <file>file:/C:/Users/gerar/Documents/NetBeansProjects/PDCAssignmentPart2/src/pdcproject/Game.java</file>
+            <file>file:/C:/Users/gerar/Documents/NetBeansProjects/PDCAssignmentPart2/src/pdcproject/Question.java</file>
+            <file>file:/C:/Users/gerar/Documents/NetBeansProjects/PDCAssignmentPart2/src/pdcproject/DBManager.java</file>
+            <file>file:/C:/Users/gerar/Documents/NetBeansProjects/PDCAssignmentPart2/src/pdcproject/Player.java</file>
         </group>
     </open-files>
 </project-private>

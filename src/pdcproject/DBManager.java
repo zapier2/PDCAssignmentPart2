@@ -18,7 +18,7 @@ import java.util.logging.Logger;
  * @author GerardPC
  * @note
  * embedded url
- * url = "jdbc:derby:WWTABDB;create=true"
+ * url = "jdbc:derby:WWTBADB;create=true"
  * online url
  * url = "jdbc:derby://localhost:1527/WWTBAMDB;create=true"
  * 
@@ -47,7 +47,6 @@ public final class DBManager {
                 conn = DriverManager.getConnection(URL, USER_NAME, PASSWORD);
                 System.out.println(URL + " Connected");
                 createResultsTable();
-
             } catch (SQLException ex) {
                 Logger.getLogger("Error starting database");
 
@@ -61,8 +60,11 @@ public final class DBManager {
             try {
                 conn.close();
             } catch (SQLException ex) {
-                Logger.getLogger("Error closing database");            }
+                Logger.getLogger("Error closing database");            
+            }
+            System.out.println("Closing connection to DB");
         }
+        
     }
     
     public void createResultsTable() {

@@ -36,7 +36,7 @@ public class Game {
         questions = new ArrayList<>();
         loadQuestions();
         database = new DBManager();
-        
+
     }
 
     public void start() {
@@ -82,7 +82,7 @@ public class Game {
                     } else {
                         System.out.println("You have no more hints left!");
                     }
-                    
+
                     // Check if they have hints left
                     if (hintCounter < 2) {
                         lifelines.setStatus(true);
@@ -90,22 +90,21 @@ public class Game {
                     // Scan to check for answer input or Hint
 
                     boolean input = false;
-                    while(input!=true)
-                    {
+                    while (input != true) {
                         answer = scan.nextLine();
-                        
-                        if (answer.equalsIgnoreCase("a")||
-                                answer.equalsIgnoreCase("b")||
-                                answer.equalsIgnoreCase("c")||
-                                answer.equalsIgnoreCase("d")||
-                                answer.equalsIgnoreCase("1")){
-                            
+
+                        if (answer.equalsIgnoreCase("a")
+                                || answer.equalsIgnoreCase("b")
+                                || answer.equalsIgnoreCase("c")
+                                || answer.equalsIgnoreCase("d")
+                                || answer.equalsIgnoreCase("1")) {
+
                             if (answer.equalsIgnoreCase("1")) {//   when hint is used
                                 hintCounter--;
                                 System.out.println(lifelines.getHintOn(i));
                                 answer = scan.nextLine();
                             }
-                            
+
                             if (answer.equalsIgnoreCase(questions.get(i).getCorrectAnswer())) {  //  When answer is correct
 
                                 System.out.println("Correct!");
@@ -138,8 +137,7 @@ public class Game {
                                     input = true;
                                 }
 
-                            } 
-                            else {
+                            } else {
                                 if (i > 4) { // safe point for winnings
                                     player.setWinnings(winnings.get(4));
                                 } else {
@@ -148,25 +146,24 @@ public class Game {
 
                                 System.out.println("Incorrect answer, Thanks for playing!");
                                 System.out.println("You have won $" + player.getWinnings());
-                                
+
                                 database.insertToTable(player);
                                 database.getQuery();
                                 saveWinnings(answer);
-                                
+
                                 isOn = false;
                                 i = questions.size();
                                 input = true;
                             }
-                        }
-                        else{
+                        } else {
                             System.out.println("Bad input please try again");
                         }
                     }
                 }
             }
-         System.out.println("See you next time! ");
-        //After while loop
-        // Thanks for playing, if they won or not, potential/what they want kidn of thing
+            System.out.println("See you next time! ");
+            //After while loop
+            // Thanks for playing, if they won or not, potential/what they want kidn of thing
         }
     }
 
@@ -212,7 +209,7 @@ public class Game {
 
     public static void main(String[] args) {
         System.out.println("----------------------------------------");
-        System.out.println("Welcome to Who Wants to be a Millionaire");        
+        System.out.println("Welcome to Who Wants to be a Millionaire");
         System.out.println("----------------------------------------");
         Game game = new Game();
         game.start();
