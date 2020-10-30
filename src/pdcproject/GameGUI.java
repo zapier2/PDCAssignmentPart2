@@ -48,6 +48,7 @@ public class GameGUI extends JPanel implements ActionListener {
     private final List<Integer> winnings = Arrays.asList(100, 200, 300, 500, 1000, 2000, 4000,
             8000, 16000, 32000, 64000, 125000, 250000, 500000, 1000000);
     private ArrayList<Question> questions;
+    private ArrayList<Player> prevPlayers;
     private boolean isOn;
     private int questionNo;
     private int hintCounter = 3;
@@ -56,7 +57,7 @@ public class GameGUI extends JPanel implements ActionListener {
     private Scoreboard playerScores;
     private static DBManager database;
     private JButton startButton, exitButton, scoreButton, buttonA, buttonB, buttonC, buttonD, hintButton;
-    private JPanel centerPanel, northPanel, bottomPanel;
+    private JPanel northPanel, bottomPanel;
     private JLabel currentWinnings, currentQuestion, gameTitle, image, remainLifeLine, scoreBoard;
 
     public GameGUI() {
@@ -112,12 +113,15 @@ public class GameGUI extends JPanel implements ActionListener {
         northPanel.removeAll();
         bottomPanel.removeAll();
 
-        ArrayList<Player> prevPlayers = database.getQuery();
-        System.out.println(prevPlayers.get(0).playerName);
+        prevPlayers = database.getQuery();
         
         DefaultListModel<String> playerList = new DefaultListModel<>();
-        for(Player player : prevPlayers){
-            playerList.addElement("Name: " + player.playerName + "  Winnings: " + player.getWinnings());
+        if(prevPlayers.size() > 0) {
+            for(Player player : prevPlayers){
+                playerList.addElement("Name: " + player.playerName + "  Winnings: " + player.getWinnings());
+            }
+        } else {
+            playerList.addElement("No Records in Database!");
         }
         JList list = new JList<>(playerList);
         list.setFont(new Font("Monospaced", Font.PLAIN, 15));
@@ -283,7 +287,7 @@ public class GameGUI extends JPanel implements ActionListener {
                     } catch (InterruptedException ex) {
                         Logger.getLogger(GameGUI.class.getName()).log(Level.SEVERE, null, ex);
                     }
-                    JOptionPane.showMessageDialog(this, questions.get(questionNo).getCorrectAnswer(), "HINT", JOptionPane.DEFAULT_OPTION);                    
+                    JOptionPane.showMessageDialog(this, "Your friend said: Answer maybe is...: "+ questions.get(questionNo).getCorrectAnswer(), "HINT", JOptionPane.DEFAULT_OPTION);                    
                     if (hintCounter == 0) {
                         JOptionPane.showMessageDialog(this, "From now on you will have no more hints");
                     }
@@ -333,10 +337,9 @@ public class GameGUI extends JPanel implements ActionListener {
             saveWinnings(this.player);
         } else {
             JOptionPane.showMessageDialog(this, "You won nothing! Thanks for playing " + this.player.playerName + "!", "Better luck next time!", JOptionPane.DEFAULT_OPTION);
+            database.closeConnections();
+            System.exit(0);
         }
-
-        database.closeConnections();
-        System.exit(0);
     }
 
     // Reading Questions from file
@@ -372,9 +375,24 @@ public class GameGUI extends JPanel implements ActionListener {
 
     // Save winnings to database
     private void saveWinnings(Player player) {
-        exitButton = new JButton("Take Winnings");
-        System.out.println("Would you like to save you winnings? (Y) for yes or (N) for no");
-
+        if(JOptionPane.showConfirmDialog(this, "Woud you like to save your game in our database?", "SAVE", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+            // IF Yes
+            if(database.playerExist(player.playerName)) {
+                if(JOptionPane.showConfirmDialog(this, "Welcome back " + this.player.playerName + "! Would you like to override your previous winnings?", "SAVE", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+                    JOptionPane.showMessageDialog(this, "You are now recorded in our database!", "Thanks!",JOptionPane.DEFAULT_OPTION);
+                    database.updatePlayer(player);
+                } else
+                    JOptionPane.showMessageDialog(this, "Thanks for playing " + this.player.playerName + "! Hope to see you again", "Thanks!",JOptionPane.DEFAULT_OPTION);
+            } else {
+                JOptionPane.showMessageDialog(this, "You are now recorded in our database!", "Thanks!",JOptionPane.DEFAULT_OPTION);
+                database.insertToTable(player);
+            }
+        } else {
+            // No
+            JOptionPane.showMessageDialog(this, "Thanks for playing " + this.player.playerName + "! Hope to see you again", "Thanks!",JOptionPane.DEFAULT_OPTION);
+        }
+        database.closeConnections();
+        System.exit(0);
     }
 
     public static void main(String[] args) {
