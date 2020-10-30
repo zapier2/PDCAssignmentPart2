@@ -12,7 +12,6 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Scanner;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -47,14 +46,14 @@ public class GameGUI extends JPanel implements ActionListener {
     public final int PANEL_HEIGHT = 500;
     private final List<Integer> winnings = Arrays.asList(100, 200, 300, 500, 1000, 2000, 4000,
             8000, 16000, 32000, 64000, 125000, 250000, 500000, 1000000);
-    private ArrayList<Question> questions;
+    final private ArrayList<Question> questions;
     private ArrayList<Player> prevPlayers;
     private boolean isOn;
     private int questionNo;
     private int hintCounter = 3;
-    private Player player;
-    private LifeLines lifelines;
-    private Scoreboard playerScores;
+    final private Player player;
+    final private LifeLines lifelines;
+    final private Scoreboard playerScores;
     private static DBManager database;
     private JButton startButton, exitButton, scoreButton, buttonA, buttonB, buttonC, buttonD, hintButton;
     private JPanel northPanel, bottomPanel;
@@ -413,7 +412,6 @@ public class GameGUI extends JPanel implements ActionListener {
         frame.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent we) {
                 // Close Database if 'x' button is used to close
-                System.out.println("Closing connection to DB");
                 GameGUI.database.closeConnections();
             }
         });
