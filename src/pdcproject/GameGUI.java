@@ -31,6 +31,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
@@ -171,7 +172,7 @@ public class GameGUI extends JPanel implements ActionListener {
         buttonD = new JButton(questions.get(questionNo).getAnswerFour());
         buttonD.setForeground(Color.WHITE);
         buttonD.setBackground(Color.BLACK);
-        hintButton = new JButton("Hint");
+        hintButton = new JButton("Life Line");
         hintButton.setForeground(Color.BLACK);
         hintButton.setBackground(Color.YELLOW);
         if (lifelines.hintStatus() || hintCounter == 0) {
@@ -258,7 +259,17 @@ public class GameGUI extends JPanel implements ActionListener {
             if (source == hintButton) {
                 if (hintCounter > 0) {          
                     hintCounter--;
-                    JOptionPane.showMessageDialog(this, questions.get(questionNo).getCorrectAnswer());                    
+                    JOptionPane pane = new JOptionPane("");
+                    JDialog help = pane.createDialog(null, "Fetching help...");
+                    help.setModal(false);
+                    help.setVisible(true);
+                    try {
+                        Thread.sleep(2000);
+                        help.setVisible(false);
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(GameGUI.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    JOptionPane.showMessageDialog(this, questions.get(questionNo).getCorrectAnswer(), "HINT", JOptionPane.DEFAULT_OPTION);                    
                     if (hintCounter == 0) {
                         JOptionPane.showMessageDialog(this, "From now on you will have no more hints");
                     }
@@ -276,9 +287,6 @@ public class GameGUI extends JPanel implements ActionListener {
     private void checkAnswer(String answer) {
         if (answer.equalsIgnoreCase(questions.get(questionNo).getCorrectAnswer())) {
             player.setWinnings(winnings.get(questionNo));
-            System.out.println("Current Question no: " + questionNo);
-            System.out.println(questions.size());
-
             JOptionPane.showMessageDialog(this, "Correct! Your current winnings is: $" + player.getWinnings(), "Nice!", JOptionPane.DEFAULT_OPTION);
             if (questionNo >= questions.size() - 1) {
                 endGame();
